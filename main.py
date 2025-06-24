@@ -9,15 +9,23 @@ from google import genai
 
 client = genai.Client(api_key=api_key)
 
+from google.genai import types
+
 
 def main():
 
     if len(sys.argv) == 1:
         print("No prompt provided")
         sys.exit(1)
+    
+    user_prompt = sys.argv[1]
+    messages = [
+    types.Content(role="user", parts=[types.Part(text=user_prompt)]),
+    ]
+
     response = client.models.generate_content(
     model='gemini-2.0-flash-001',
-    contents=[sys.argv[1]]
+    contents=messages
     )
     print(response.text)
     print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
