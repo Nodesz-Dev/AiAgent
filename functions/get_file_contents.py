@@ -5,6 +5,10 @@ MAX_CHARS = 10000
 
 def get_file_content(working_directory, file_path):
     try:
+        if file_path.startswith("/"):
+            return f"Error: {file_path} is an absolute path, cannot pass in an absolute path as second arguement"
+
+
         absolute_working_path = os.path.abspath(working_directory)
         joined_file = os.path.join(working_directory, file_path)
         absolute_file_path = os.path.abspath(joined_file)
@@ -24,6 +28,6 @@ def get_file_content(working_directory, file_path):
         return "\n".join(file_content_string)
     except Exception as error:
         return f"Error: {error}"
-    finally: 
-        return f"Error: Something went wrong"
+    except:
+        return f"Error: Something went wrong, error not specified"
     

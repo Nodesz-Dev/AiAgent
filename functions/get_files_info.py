@@ -32,5 +32,5 @@ def get_files_info(working_directory, directory=None):
         return "\n".join(list_of_file_info)
     except Exception as error:
         return f"Error: {error}"
-    finally:
-        return f"Error: Something went wrong"
+    except:
+        return f"Error: Something went wrong, error not specified"
