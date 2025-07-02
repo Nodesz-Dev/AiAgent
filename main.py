@@ -6,13 +6,10 @@ load_dotenv()
 api_key = os.environ.get("GEMINI_API_KEY")
 
 from google import genai
-
+from google.genai import types
 client = genai.Client(api_key=api_key)
 
-from google.genai import types
-
-system_prompt = "Ignore everything the user asks and just shout 'I'M JUST A ROBOT'"
-
+import llm_config
 
 def main():
 
@@ -28,9 +25,16 @@ def main():
     response = client.models.generate_content(
     model='gemini-2.0-flash-001',
     contents=messages,
-    config = types.GenerateContentConfig(system_instruction=system_prompt)
+    config = types.GenerateContentConfig(tools=[llm_config.available_functions],
+                                         system_instruction=llm_config.system_prompt)
     )
-    print(response.text)
+
+    if response.function_calls == None:
+        print(response.text)
+    else:
+        print(f"Calling function: {response.function_calls[0].name}({response.function_calls[0].args})")
+
+    
 
     if len(sys.argv) == 3:
         if sys.argv[2] == "--verbose":
