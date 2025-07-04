@@ -1,4 +1,6 @@
 import os.path
+from google import genai
+from google.genai import types
 
 def write_file(working_directory, file_path, content):
 
@@ -32,3 +34,22 @@ def write_file(working_directory, file_path, content):
         return f"Error: {error}"
     except:
         return f"Error: Something went wrong, error not specified"
+    
+
+schema_write_file = types.FunctionDeclaration(
+    name="write_file",
+    description="Takes a target file path, creating the directories and files if necessary then writes the given contents into the file returning a message of success",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "File path": types.Schema(
+                type=types.Type.STRING,
+                description="The file path to the target file we wish to write to, relative to the working directory. If no file exists at this path, the necessary directories and files will be created before being writtin to",
+            ),
+            "Contents": types.Schema(
+                type=types.Type.STRING,
+                description="This is the text contents we wish to write to the designated file"
+            )
+        },
+    ),
+)

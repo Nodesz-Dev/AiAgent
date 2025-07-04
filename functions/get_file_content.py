@@ -1,4 +1,6 @@
 import os.path
+from google import genai
+from google.genai import types
 
 MAX_CHARS = 10000
 
@@ -30,4 +32,18 @@ def get_file_content(working_directory, file_path):
         return f"Error: {error}"
     except:
         return f"Error: Something went wrong, error not specified"
+    
+schema_get_file_content = types.FunctionDeclaration(
+    name="get_file_content",
+    description="Lists content of the specified file up to a maximum of 10000 characters, given in text form. File must be within the working directory.",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "File path": types.Schema(
+                type=types.Type.STRING,
+                description="The file path to the target file we wish to get the contents from, relative to the working directory. If path is not given, nothing will be retrieved",
+            ),
+        },
+    ),
+)
     
