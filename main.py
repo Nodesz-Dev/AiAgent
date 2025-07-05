@@ -10,8 +10,13 @@ from google.genai import types
 client = genai.Client(api_key=api_key)
 
 import llm_config
+from functions.call_function import call_function
 
 def main():
+    verbose = False
+
+    if "--verbose" in sys.argv:
+        verbose = True
 
     if len(sys.argv) == 1:
         print("No prompt provided")
@@ -29,17 +34,21 @@ def main():
                                          system_instruction=llm_config.system_prompt)
     )
 
+    function_call_result = None
     if response.function_calls == None:
         print(response.text)
     else:
-        print(f"Calling function: {response.function_calls[0].name}({response.function_calls[0].args})")
+        function_call_result = call_function(response.function_calls[0], verbose)
 
-    
+    if function_call_result.parts[0].function_response.response:
+        if verbose:
+            print(f"-> {function_call_result.parts[0].function_response.response}")
+    else:
+        raise Exception(f"Fatal error: function is missing returned response")
 
-    if len(sys.argv) == 3:
-        if sys.argv[2] == "--verbose":
-            print(f"User prompt: {user_prompt}")
-            print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
-            print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
+    if verbose:
+        print(f"User prompt: {user_prompt}")
+        print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
+        print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
 
 main()

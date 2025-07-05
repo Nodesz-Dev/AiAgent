@@ -56,11 +56,11 @@ schema_run_python_file = types.FunctionDeclaration(
     parameters=types.Schema(
         type=types.Type.OBJECT,
         properties={
-            "File path": types.Schema(
+            "file_path": types.Schema(
                 type=types.Type.STRING,
                 description="The path to the target python script we wish to execute, relative to the working directory. If path is not given, nothing will be executed",
             ),
-            "Args": types.Schema(
+            "args": types.Schema(
                 type=types.Type.STRING,
                 description = "Optional arguements that will be passed to through to the target python script being ran"
             )
