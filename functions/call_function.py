@@ -17,7 +17,7 @@ def call_function(function_call_part:types.FunctionCall, verbose=False):
     if verbose:
         print(f"Calling function: {function_call_part.name}({function_call_part.args})")
     else:
-        print(f" - Calling function: {function_call_part.name}")
+        print(f"- Calling function: {function_call_part.name}")
 
     function_dict = {
         "get_files_info" : get_files_info,
@@ -30,7 +30,6 @@ def call_function(function_call_part:types.FunctionCall, verbose=False):
     #function call
     try:
         function_result = function_dict[function_call_part.name](**function_call_part.args)
-        print(function_result)
     except NameError:
         print(f"function name not found in dict {function_call_part.name}")
     except:

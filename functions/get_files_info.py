@@ -4,13 +4,16 @@ from google.genai import types
 
 def get_files_info(working_directory, directory=None):
 
+    if directory == None:
+        directory = working_directory
+
     try:
         if directory.startswith("/"):
             return f"Error: {directory} is an absolute path, cannot pass in an absolute path as second arguement"
 
         absolute_working_directory = os.path.abspath(working_directory)
         absolute_directory = ""
-        if directory == "." or directory == None:
+        if directory == "." or directory == working_directory:
             absolute_directory = absolute_working_directory
         else:
             absolute_directory = os.path.join(absolute_working_directory, directory)
